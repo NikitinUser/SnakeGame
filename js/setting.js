@@ -7,3 +7,7 @@ var h = 400;
 var score = 0;
 var snake;
 var food;
+var speedX = 1, speedY = 0;
+var record=0;
+var snakeX;
+var snakeY;

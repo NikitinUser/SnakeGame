@@ -14,6 +14,7 @@ var drawModule = (function () {
   var scoreText = function() {
     var score_text = "Score: " + score;
     ctx.fillStyle = 'black';
+    ctx.font = "italic 13pt Arial";
     ctx.fillText(score_text, 245, h-5);
   }
 
@@ -21,7 +22,7 @@ var drawModule = (function () {
       var length = 2;
       snake = [];
       for (var i = length-1; i>=0; i--) {
-          snake.push({x:i, y:0});
+          snake.push({x:i*20, y:20});
       }
   }
 
@@ -29,24 +30,45 @@ var drawModule = (function () {
       ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, w, h);
       btn.setAttribute('disabled', true);
+      snakeX = snake[0].x;
+      snakeY = snake[0].y;
+      switch ( direction ) {
+          case 'left':
+                if(speedX == 0){
+                  speedY = 0;
+                  speedX = -1;
+                }
+              break;
+          case 'right':
+                if(speedX == 0){
+                  speedY = 0;
+                  speedX = 1;
+                }
+              break;
+          case 'down':
+                if(speedY == 0){
+                  speedX = 0;
+                  speedY = 1;
+                }
+              break;
+          case 'up':
+                if(speedY == 0){
+                  speedX = 0;
+                  speedY = -1;
+                }
+              break;
+      }
+      snakeX +=speedX;
+      snakeY += speedY;
 
-      var snakeX = snake[0].x;
-      var snakeY = snake[0].y;
-
-      if (direction == 'right') {
-        snakeX++; }
-      else if (direction == 'left') {
-        snakeX--; }
-      else if (direction == 'up') {
-        snakeY--;
-      } else if(direction == 'down') {
-        snakeY++; }
-
-      if (snakeX == -1 || snakeX == w/snakeSize || snakeY == -1 || snakeY == h/snakeSize || checkCollision(snakeX, snakeY, snake)) {
+      if (snakeX < 0 || snakeY < 0 || snakeX == w/snakeSize || snakeY == h/snakeSize || checkCollision(snakeX, snakeY, snake)) {
 
           btn.removeAttribute('disabled', true);
 
           ctx.clearRect(0,0,w,h);
+
+          if(score > record) record = score;
+          document.getElementById('record').innerHTML = "Record: " + record;
           gameloop = clearInterval(gameloop);
           return;
         }
@@ -98,7 +120,7 @@ var drawModule = (function () {
 
   var init = function(){
       score = 0;
-      direction = 'down';
+      direction = 'right';
       drawSnake();
       createFood();
       gameloop = setInterval(paint, 100);
