@@ -67,7 +67,10 @@ var drawModule = (function () {
 
           ctx.clearRect(0,0,w,h);
 
-          if(score > record) record = score;
+          if(score > record){
+            document.cookie = score;
+            record = document.cookie;
+          } 
           document.getElementById('record').innerHTML = "Record: " + record;
           gameloop = clearInterval(gameloop);
           return;

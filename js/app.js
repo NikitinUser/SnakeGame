@@ -1,6 +1,11 @@
 (function (window, document, drawModule, undefined) {
+	document.getElementById('record').innerHTML = "Record: " + record;
 	var btn = document.getElementById('btn');
-	btn.addEventListener("click", function(){ drawModule.init();});
+	btn.addEventListener("click", function(){
+		btn.blur(); 
+		mycanvas.focus(); 
+		drawModule.init();}
+		);
 	document.onkeydown = function(event) {
         keyCode = window.event.keyCode;
         keyCode = event.keyCode;
